@@ -3,6 +3,22 @@ document.addEventListener('DOMContentLoaded', function() {
     let monthlyChart = null;
     let tempChart = null;
 
+    const sidebar = document.querySelector('.sidebar');
+    const mobileToggle = document.getElementById('mobileToggle');
+    
+    // Mobile Sidebar Toggle
+    mobileToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sidebar.classList.toggle('active');
+    });
+
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', (e) => {
+        if (sidebar.classList.contains('active') && !sidebar.contains(e.target) && e.target !== mobileToggle) {
+            sidebar.classList.remove('active');
+        }
+    });
+
     const locationSelect = document.getElementById('locationSelect');
     const yearSelect = document.getElementById('yearSelect');
     const currentLocationLabel = document.getElementById('currentLocation');
