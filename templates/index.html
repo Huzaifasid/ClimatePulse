@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Climate & Rainfall Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <aside class="sidebar">
+        <div class="logo">
+          <h1>Climate<span>Pulse</span></h1>
+        </div>
+        <nav>
+          <div class="filter-section">
+            <label for="locationSelect">Location</label>
+            <select id="locationSelect">
+              <option value="" disabled selected>Select Location</option>
+            </select>
+          </div>
+          <div class="filter-section">
+            <label for="yearSelect">Year</label>
+            <select id="yearSelect">
+              <option value="" disabled selected>Select Year</option>
+            </select>
+          </div>
+        </nav>
+        <div class="sidebar-footer">
+          <p>&copy; 2026 Climate Analytics</p>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header>
+          <div class="header-title">
+            <h2 id="currentLocation">Select a Location</h2>
+            <p id="currentYearRange">Annual overview</p>
+          </div>
+          <div class="header-actions">
+            <div class="status-badge">Live Data</div>
+          </div>
+        </header>
+
+        <section class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon rainfall"></div>
+            <div class="stat-info">
+              <h3>Total Rainfall</h3>
+              <p id="totalRainfall">--</p>
+              <span>mm</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon temp"></div>
+            <div class="stat-info">
+              <h3>Avg Temperature</h3>
+              <p id="avgTemp">--</p>
+              <span>°C</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon humidity"></div>
+            <div class="stat-info">
+              <h3>Avg Humidity</h3>
+              <p id="avgHumidity">--</p>
+              <span>%</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon wind"></div>
+            <div class="stat-info">
+              <h3>Avg Wind Speed</h3>
+              <p id="avgWind">--</p>
+              <span>m/s</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="charts-grid">
+          <div class="chart-container large">
+            <h3>Annual Rainfall & Temperature Trends</h3>
+            <canvas id="annualTrendChart"></canvas>
+          </div>
+          <div class="chart-container">
+            <h3>
+              Monthly Climate Distribution (<span id="selectedYearLabel"
+                >----</span
+              >)
+            </h3>
+            <canvas id="monthlyChart"></canvas>
+          </div>
+          <div class="chart-container">
+            <h3>
+              Temperature Range (<span id="selectedYearLabel2">----</span>)
+            </h3>
+            <canvas id="tempRangeChart"></canvas>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+  </body>
+</html>
