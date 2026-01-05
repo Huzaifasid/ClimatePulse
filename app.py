@@ -44,5 +44,6 @@ def get_monthly(location, year):
     monthly = data_utils.get_monthly_averages(df, location, year)
     return jsonify(monthly)
 
-if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+# Required for Vercel
+# if __name__ == '__main__':
+#     app.run(debug=True, port=5000)

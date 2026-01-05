@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 
-CSV_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'lac_data.csv')
+CSV_PATH = os.path.join(os.path.dirname(__file__), 'lac_data.csv')
 
 def load_data():
     if not os.path.exists(CSV_PATH):
