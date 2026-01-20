@@ -10,23 +10,31 @@ app.secret_key = os.environ.get('SECRET_KEY', 'climate-pulse-secret-key-2026')
 # Store uploaded dataframes in memory (keyed by session ID)
 uploaded_data_store = {}
 
-# Load default data once at startup
-try:
-    default_df = data_utils.load_data()
-    print(f"Default data loaded successfully from {data_utils.CSV_PATH}.")
-except Exception as e:
-    print(f"CRITICAL ERROR loading default data: {e}")
-    # Log more details if possible
-    if not os.path.exists(data_utils.CSV_PATH):
-        print(f"File not found: {data_utils.CSV_PATH}")
-    default_df = None
+# Lazy loading for default data (avoids crashes during serverless cold start)
+_default_df = None
+_data_load_attempted = False
+
+def get_default_df():
+    """Lazy load default data on first access"""
+    global _default_df, _data_load_attempted
+    if not _data_load_attempted:
+        _data_load_attempted = True
+        try:
+            _default_df = data_utils.load_data()
+            print(f"Default data loaded successfully from {data_utils.CSV_PATH}.")
+        except Exception as e:
+            print(f"CRITICAL ERROR loading default data: {e}")
+            if not os.path.exists(data_utils.CSV_PATH):
+                print(f"File not found: {data_utils.CSV_PATH}")
+            _default_df = None
+    return _default_df
 
 def get_current_df():
     """Get the dataframe for current session (uploaded or default)"""
     session_id = session.get('data_session_id')
     if session_id and session_id in uploaded_data_store:
         return uploaded_data_store[session_id]['data']
-    return default_df
+    return get_default_df()
 
 def get_data_source_info():
     """Get info about current data source"""
@@ -40,6 +48,7 @@ def get_data_source_info():
             'warnings': info.get('warnings', []),
             'is_climate_data': info.get('is_climate_data', False)
         }
+    default_df = get_default_df()
     return {
         'type': 'default',
         'filename': 'lac_data.csv',

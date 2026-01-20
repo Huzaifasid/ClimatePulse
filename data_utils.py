@@ -3,7 +3,9 @@ import numpy as np
 import os
 import io
 
-CSV_PATH = os.path.join(os.path.dirname(__file__), 'lac_data.csv')
+# Get the directory containing this file (works in serverless environments)
+_BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+CSV_PATH = os.path.join(_BASE_DIR, 'lac_data.csv')
 
 # Required columns with their roles
 REQUIRED_COLUMNS = {
