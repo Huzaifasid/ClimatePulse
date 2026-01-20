@@ -30,7 +30,34 @@ trained_models = {}
 def prepare_data(df, location):
     """Prepare and clean data for ML models"""
     data = df[df['Locations'] == location].copy()
-    data = data.dropna(subset=FEATURE_COLS + [TARGET_REGRESSION])
+    
+    # Check if we have data for this location
+    if len(data) == 0:
+        raise ValueError(f"No data found for location: {location}")
+    
+    # Ensure all required columns exist, fill with defaults if missing
+    defaults = {
+        'T2M': 25.0, 'T2M_MAX': 30.0, 'T2M_MIN': 20.0,
+        'RH2M': 50.0, 'WS2M_MAX': 5.0, 'QV2M': 10.0,
+        'PRECTOTCORR': 0.0
+    }
+    
+    for col, default_val in defaults.items():
+        if col not in data.columns:
+            data[col] = default_val
+        else:
+            # Fill NaN values with defaults
+            data[col] = data[col].fillna(default_val)
+    
+    # Ensure numeric types
+    for col in FEATURE_COLS + [TARGET_REGRESSION]:
+        if col in data.columns:
+            data[col] = pd.to_numeric(data[col], errors='coerce').fillna(defaults.get(col, 0))
+    
+    # Check minimum sample size (need at least 10 samples for train/test split)
+    MIN_SAMPLES = 10
+    if len(data) < MIN_SAMPLES:
+        raise ValueError(f"Insufficient data for {location}: only {len(data)} samples found, need at least {MIN_SAMPLES}")
     
     X = data[FEATURE_COLS].values
     y_regression = data[TARGET_REGRESSION].values

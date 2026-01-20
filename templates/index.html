@@ -17,7 +17,49 @@
     />
   </head>
   <body>
-    <div class="dashboard-container">
+    <!-- Data Source Selection Screen -->
+    <div class="data-source-screen" id="dataSourceScreen">
+      <div class="source-selection-container">
+        <div class="source-header">
+          <h1>Climate<span>Pulse</span></h1>
+          <p>Climate & Rainfall Data Analysis Dashboard</p>
+        </div>
+        
+        <div class="source-options">
+          <div class="source-card" id="useDefaultCard">
+            <div class="source-icon">📊</div>
+            <h3>Use Default Dataset</h3>
+            <p>Load the pre-configured LAC climate data with 130,000+ records across 10 locations</p>
+            <button class="source-btn primary" id="useDefaultBtn">
+              Use Default Data
+            </button>
+          </div>
+          
+          <div class="source-divider">
+            <span>OR</span>
+          </div>
+          
+          <div class="source-card" id="uploadCard">
+            <div class="source-icon">📁</div>
+            <h3>Upload Your Own CSV</h3>
+            <p>Upload any CSV file with location and year data. Columns will be auto-detected.</p>
+            <input type="file" id="csvFileInput" accept=".csv" hidden />
+            <button class="source-btn secondary" id="uploadCsvBtn">
+              Choose CSV File
+            </button>
+          </div>
+        </div>
+        
+        <div id="uploadStatus" class="upload-status"></div>
+        
+        <div class="source-footer">
+          <p>Built by: Huzaifa Ahmed Siddiqui, Muhammad Nizam, Muhammad Bin Farooq</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Dashboard (hidden initially) -->
+    <div class="dashboard-container hidden" id="dashboardContainer">
       <button class="mobile-toggle" id="mobileToggle">
         <span></span>
         <span></span>
@@ -39,6 +81,17 @@
             <select id="yearSelect">
               <option value="" disabled selected>Select Year</option>
             </select>
+          </div>
+          
+          <!-- Data Source Info (compact) -->
+          <div class="data-source-info">
+            <label>Current Data</label>
+            <div class="data-source-indicator" id="dataSourceIndicator">
+              <span class="source-badge default">📊 Default Data</span>
+            </div>
+            <button class="change-source-btn" id="changeSourceBtn">
+              Change Data Source
+            </button>
           </div>
         </nav>
         <div class="team-section">
@@ -74,7 +127,7 @@
               <span>mm</span>
             </div>
           </div>
-          <div class="stat-card">
+          <div class="stat-card climate-only">
             <div class="stat-icon temp"></div>
             <div class="stat-info">
               <h3>Avg Temperature</h3>
@@ -82,7 +135,7 @@
               <span>°C</span>
             </div>
           </div>
-          <div class="stat-card">
+          <div class="stat-card climate-only">
             <div class="stat-icon humidity"></div>
             <div class="stat-info">
               <h3>Avg Humidity</h3>
@@ -90,7 +143,7 @@
               <span>%</span>
             </div>
           </div>
-          <div class="stat-card">
+          <div class="stat-card climate-only">
             <div class="stat-icon wind"></div>
             <div class="stat-info">
               <h3>Avg Wind Speed</h3>
@@ -102,18 +155,18 @@
 
         <section class="charts-grid">
           <div class="chart-container large">
-            <h3>Annual Rainfall & Temperature Trends</h3>
+            <h3>Annual Trends</h3>
             <canvas id="annualTrendChart"></canvas>
           </div>
           <div class="chart-container">
             <h3>
-              Monthly Climate Distribution (<span id="selectedYearLabel"
+              Monthly Distribution (<span id="selectedYearLabel"
                 >----</span
               >)
             </h3>
             <canvas id="monthlyChart"></canvas>
           </div>
-          <div class="chart-container">
+          <div class="chart-container climate-only">
             <h3>
               Temperature Range (<span id="selectedYearLabel2">----</span>)
             </h3>
@@ -122,7 +175,7 @@
         </section>
 
         <!-- ML Analytics Section -->
-        <section class="ml-section">
+        <section class="ml-section climate-only" id="mlSection">
           <h2 class="section-title">🤖 Machine Learning Analytics</h2>
           <p class="section-subtitle">
             Train models to predict rainfall and classify weather patterns
@@ -196,6 +249,18 @@
               Select a location and click "Train All Models" to see ML
               predictions
             </p>
+          </div>
+        </section>
+
+        <!-- Data Explorer Section (Table View) -->
+        <section class="data-explorer-section">
+          <h2 class="section-title">📄 Raw Data Explorer</h2>
+          <p class="section-subtitle">Preview of the uploaded dataset (First 50 records)</p>
+          <div class="table-container">
+            <table id="rawDataTable">
+              <thead><tr id="tableHeader"></tr></thead>
+              <tbody id="tableBody"></tbody>
+            </table>
           </div>
         </section>
       </main>
