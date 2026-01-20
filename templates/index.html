@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -120,9 +120,88 @@
             <canvas id="tempRangeChart"></canvas>
           </div>
         </section>
+
+        <!-- ML Analytics Section -->
+        <section class="ml-section">
+          <h2 class="section-title">🤖 Machine Learning Analytics</h2>
+          <p class="section-subtitle">
+            Train models to predict rainfall and classify weather patterns
+          </p>
+
+          <div class="ml-controls">
+            <button id="trainAllBtn" class="ml-btn primary">
+              <span class="btn-icon">⚡</span> Train All Models
+            </button>
+
+            <div class="model-buttons">
+              <h4>Supervised Learning - Regression</h4>
+              <button
+                class="model-btn regression"
+                data-model="linear_regression"
+              >
+                Linear Regression
+              </button>
+              <button class="model-btn regression" data-model="decision_tree">
+                Decision Tree
+              </button>
+              <button class="model-btn regression" data-model="random_forest">
+                Random Forest
+              </button>
+
+              <h4>Supervised Learning - Classification</h4>
+              <button
+                class="model-btn classification"
+                data-model="logistic_regression"
+              >
+                Logistic Regression
+              </button>
+              <button class="model-btn classification" data-model="knn">
+                KNN Classifier
+              </button>
+
+              <h4>Unsupervised Learning</h4>
+              <button class="model-btn clustering" data-model="kmeans">
+                K-Means Clustering
+              </button>
+
+              <h4>Reinforcement Learning</h4>
+              <button class="model-btn rl" data-model="reinforcement_learning">
+                Q-Learning (Irrigation Policy)
+              </button>
+
+              <h4>Language of Logic</h4>
+              <button class="model-btn logic" data-model="rule_based">
+                Rule-Based Expert System
+              </button>
+
+              <h4>Ensemble Techniques</h4>
+              <button class="model-btn ensemble" data-model="ensemble">
+                Voting, Bagging, Boosting
+              </button>
+
+              <h4>Deep Learning</h4>
+              <button class="model-btn neural" data-model="neural_network">
+                Neural Network (MLP)
+              </button>
+            </div>
+          </div>
+
+          <div id="mlLoader" class="ml-loader" style="display: none">
+            <div class="spinner"></div>
+            <p>Training models...</p>
+          </div>
+
+          <div id="mlResults" class="ml-results">
+            <p class="placeholder">
+              Select a location and click "Train All Models" to see ML
+              predictions
+            </p>
+          </div>
+        </section>
       </main>
     </div>
 
     <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ml_dashboard.js') }}"></script>
   </body>
 </html>
