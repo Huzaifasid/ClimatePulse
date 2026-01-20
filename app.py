@@ -13,9 +13,12 @@ uploaded_data_store = {}
 # Load default data once at startup
 try:
     default_df = data_utils.load_data()
-    print("Default data loaded successfully.")
+    print(f"Default data loaded successfully from {data_utils.CSV_PATH}.")
 except Exception as e:
-    print(f"Error loading default data: {e}")
+    print(f"CRITICAL ERROR loading default data: {e}")
+    # Log more details if possible
+    if not os.path.exists(data_utils.CSV_PATH):
+        print(f"File not found: {data_utils.CSV_PATH}")
     default_df = None
 
 def get_current_df():
@@ -307,7 +310,7 @@ def get_required_columns():
 
 # Required for Vercel deployment (comment out for local development)
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=int(os.environ.get('PORT', 5000)))
 
 
 
